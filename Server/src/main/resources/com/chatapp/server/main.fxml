@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatapp.server.MainController">
+    <top>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Server Status: Running">
+                    <font>
+                        <Font name="Barlow Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label text="Waiting for Clients....." textFill="#676767">
+                    <font>
+                        <Font name="Barlow SemiBold" size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+    </top>
+    <left>
+        <ScrollPane fx:id="usersScrollPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <content>
+                <VBox fx:id="userVbox"/>
+            </content>
+        </ScrollPane>
+    </left>
+    <center>
+        <ScrollPane fx:id="messageScrollPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <content>
+                <VBox fx:id="messageVbox"/>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
