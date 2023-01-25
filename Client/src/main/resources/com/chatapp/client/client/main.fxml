@@ -8,12 +8,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<?import javafx.scene.text.TextFlow?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatapp.client.client.MainController">
     <top>
         <AnchorPane style="-fx-background-color:black">
@@ -48,16 +44,6 @@
                                 <AnchorPane>
                                     <children>
                                         <VBox fx:id="messageBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                                            <HBox style="-fx-padding:4px 60px 4px 0px;">
-                                                <TextFlow style="-fx-background-color:#58af0c;-fx-fill:white;-fx-background-radius:0px 20px 0px 20px;-fx-padding:10px;">
-                                                    <Text text="hello how are you are doing well? \n nice to meet you" style="-fx-fill:white"></Text>
-                                                </TextFlow>
-                                            </HBox>
-                                            <HBox style="-fx-padding:4px 60px 4px 0px;">
-                                                <TextFlow style="-fx-background-color:#58af0c;-fx-fill:white;-fx-background-radius:0px 20px 0px 20px;-fx-padding:10px;">
-                                                    <Text text="hello" style="-fx-fill:white"></Text>
-                                                </TextFlow>
-                                            </HBox>
                                         </VBox>
                                     </children>
                                 </AnchorPane>

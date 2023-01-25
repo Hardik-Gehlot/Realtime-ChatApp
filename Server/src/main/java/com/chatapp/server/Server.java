@@ -16,7 +16,6 @@ public class Server {
     static HashMap<String, Socket> clients;
 
     private final int JOINED = 1;
-    private final int EXIT = 0;
     static VBox messageVbox;
     static VBox userVbox;
     private ServerSocket serverSocket;
@@ -75,18 +74,16 @@ public class Server {
                 if(!entry.getKey().equals(username)){
                     try {
                         Socket socket = entry.getValue();
-                        if(socket.isConnected()){
+                        if(socket.isConnected()) {
                             Message message;
-                            if(joined == 1){
-                                message = new Message(username,"server","addUser");
-                            }else{
-                                message = new Message(username,"server","removeUser");
+                            if (joined == 1) {
+                                message = new Message("server", "addUser", username);
+                            } else {
+                                message = new Message("server", "removeUser", username);
                             }
-                            String msg = message.getMsg()+"~"+message.getSender()+"~"+message.getReceiver();
+                            String msg = message.getSender() + "~" + message.getReceiver() + "~" + message.getMsg();
                             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                             oos.writeObject(msg);
-                        }else{
-                            System.out.println("send update client is not connected");
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -109,18 +106,15 @@ class ReadMessage extends Thread{
     public void run() {
         super.run();
         while(true){
-            System.out.println("getting message");
             String str = null;
             try {
                 str = (String) ois.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            String[] msg = str.split("~");
+            String[] msg = str.split("~",3);
             Message message = new Message(msg[0],msg[1],msg[2]);
-            System.out.println("got a  message: "+message);
             if(message.getMsg().equals("exit")){
-                System.out.println("exit message.......");
                 MainController.addMessage(username+" quit!",Server.userVbox);
                 Server.clients.remove(username);
                 Server.sendUpdate(username,0);

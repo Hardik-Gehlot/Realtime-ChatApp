@@ -11,10 +11,10 @@ public class Message implements Serializable{
 
     Message(){
         this.msg = "default message";
-        this.sender = "hardik";
-        this.receiver = "kunal";
+        this.sender = "default";
+        this.receiver = "default";
     }
-    public Message(String msg, String sender, String receiver) {
+    public Message(String sender, String receiver, String msg) {
         this.msg = msg;
         this.sender = sender;
         this.receiver = receiver;

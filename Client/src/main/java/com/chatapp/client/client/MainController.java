@@ -15,8 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -45,11 +43,9 @@ public class MainController implements Initializable {
 
     private String reciever=null;
 
-    private ArrayList<String> clientList;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
-            this.clientList = new ArrayList<>();
             Socket socket = new Socket("localhost",2020);
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             new Thread(() -> {
@@ -95,10 +91,8 @@ public class MainController implements Initializable {
     public static void updateUser(String username,ListView<String> userList,String status){
         Platform.runLater(()->{
             if(status.equals("addUser")){
-                System.out.println("adding "+username);
                 userList.getItems().add(username);
             }else{
-                System.out.println("removing "+username);
                 userList.getItems().remove(username);
             }
         });
@@ -120,8 +114,6 @@ public class MainController implements Initializable {
 
     //handling send button
     public void sendMessage(MouseEvent event) {
-        //TODO:message box scroll bar is not working fix it
-        //TODO: dont send empty messages and dont send it to null reciver
         if(reciever!=null){
             String msg = message.getText().trim();
             if(!msg.isEmpty()){
@@ -135,7 +127,7 @@ public class MainController implements Initializable {
                 hBox.setStyle("-fx-padding:4px 0px 4px 60px;");
                 hBox.setAlignment(Pos.CENTER_RIGHT);
                 Message message;
-                message = new Message(msg,name,reciever);
+                message = new Message(name,reciever,msg);
                 client.sendMessage(message);
                 MainController.addMessage(hBox,messageBox);
             }

@@ -14,14 +14,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Client {
-    private Socket socket;
     private ObjectOutputStream outputStream;
 
     public VBox messageBox;
 
     public ListView<String> userListView;
     public Client(Socket socket, VBox messageBox, ListView<String> userList) throws IOException {
-        this.socket = socket;
         this.outputStream = new ObjectOutputStream(socket.getOutputStream());
         this.messageBox = messageBox;
         this.userListView = userList;
@@ -32,7 +30,6 @@ public class Client {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("users is "+users);
         MainController.addUsers(users,userListView);
         ReadMessages readMessages = new ReadMessages(socket,messageBox,userListView);
         readMessages.start();
@@ -40,7 +37,7 @@ public class Client {
 
     public void sendMessage(Message message) {
         try {
-            String msg = message.getMsg()+"~"+message.getSender()+"~"+message.getReceiver();
+            String msg = message.getSender()+"~"+message.getReceiver()+"~"+message.getMsg();
             outputStream.writeObject(msg);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -49,14 +46,12 @@ public class Client {
 }
 class ReadMessages extends Thread{
     Socket socket;
-//    ObjectInputStream ois;
     public VBox messageBox;
     public ListView<String> userListView;
     ReadMessages(Socket socket,VBox messageBox,ListView<String> userListView) throws IOException {
         this.socket = socket;
         this.messageBox =  messageBox;
         this.userListView = userListView;
-//        this.ois = new ObjectInputStream(socket.getInputStream());
     }
 
     @Override
@@ -69,15 +64,13 @@ class ReadMessages extends Thread{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("getting msg");
             String str = null;
             try {
                 str = ( String )ois.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            String[] msg = str.split("~");
-            System.out.println("got one "+msg);
+            String[] msg = str.split("~",3);
             Message message = new Message(msg[0],msg[1],msg[2]);
             if(message.getSender().equals("server")){
                 MainController.updateUser(message.getMsg(),userListView,message.getReceiver());
