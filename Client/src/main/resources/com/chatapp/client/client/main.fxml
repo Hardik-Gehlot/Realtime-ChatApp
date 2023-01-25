@@ -13,37 +13,51 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #000025;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatapp.client.client.MainController">
+<?import javafx.scene.text.TextFlow?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatapp.client.client.MainController">
     <top>
-        <Label id="username" fx:id="username" alignment="CENTER" style="-fx-text-fill: #ffffff;" text="You: " textAlignment="CENTER" BorderPane.alignment="TOP_RIGHT">
-            <font>
-                <Font name="Barlow Bold" size="18.0" />
-            </font>
-            <padding>
-                <Insets bottom="8.0" left="10.0" right="8.0" top="8.0" />
-            </padding>
-        </Label>
+        <AnchorPane style="-fx-background-color:black">
+            <children>
+                <Label id="username" fx:id="username" alignment="CENTER_RIGHT" style="-fx-text-fill: #ffffff;" text="You: " textAlignment="CENTER">
+                    <font>
+                        <Font name="Barlow Bold" size="18.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="8.0" left="10.0" right="8.0" top="8.0" />
+                    </padding>
+                </Label>
+            </children>
+        </AnchorPane>
     </top>
     <center>
-        <BorderPane prefHeight="-Infinity" prefWidth="-Infinity" style="-fx-background-color: #1e1e1e;" BorderPane.alignment="CENTER">
+        <BorderPane prefHeight="Infinity" prefWidth="Infinity" BorderPane.alignment="CENTER">
             <bottom>
                 <AnchorPane BorderPane.alignment="BOTTOM_CENTER">
                     <children>
-                        <TextField id="message" fx:id="message" promptText="Enter Message..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="60.0" />
-                        <Button id="sendButton" fx:id="sendButton" mnemonicParsing="false" onMouseClicked="#sendMessage" prefWidth="60.0" text="send" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <TextField id="message" fx:id="message" promptText="Enter Message..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="100.0" />
+                        <Button id="sendButton" fx:id="sendButton" mnemonicParsing="false" onMouseClicked="#sendMessage" prefWidth="100.0" text="send" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        style="-fx-background-color:green;-fx-text-fill:white;-fx-color:orange;"/>
                     </children>
                 </AnchorPane>
             </bottom>
             <center>
-                <AnchorPane prefHeight="900.0" prefWidth="800.0">
+                <AnchorPane>
                     <children>
-                        <ScrollPane fx:id="messageBoxScrollPane" prefHeight="337.0" prefWidth="404.0" style="-fx-background-color: #183445;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+                        <ScrollPane fx:id="messageBoxScrollPane" fitToHeight="true" fitToWidth="true"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
                             <content>
-                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                <AnchorPane>
                                     <children>
-                                        <VBox fx:id="messageBox" prefHeight="335.0" prefWidth="396.0" style="-fx-background-color: #1e8565;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="0.0">
-                                            <HBox prefWidth="-Infinity"><Text text="hihfsfsfkfkfskf" /> </HBox>
-                                            <HBox alignment="BASELINE_RIGHT" prefWidth="-Infinity"><Text text="hello" /> </HBox>
+                                        <VBox fx:id="messageBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                                            <HBox style="-fx-padding:4px 60px 4px 0px;">
+                                                <TextFlow style="-fx-background-color:#58af0c;-fx-fill:white;-fx-background-radius:0px 20px 0px 20px;-fx-padding:10px;">
+                                                    <Text text="hello how are you are doing well? \n nice to meet you" style="-fx-fill:white"></Text>
+                                                </TextFlow>
+                                            </HBox>
+                                            <HBox style="-fx-padding:4px 60px 4px 0px;">
+                                                <TextFlow style="-fx-background-color:#58af0c;-fx-fill:white;-fx-background-radius:0px 20px 0px 20px;-fx-padding:10px;">
+                                                    <Text text="hello" style="-fx-fill:white"></Text>
+                                                </TextFlow>
+                                            </HBox>
                                         </VBox>
                                     </children>
                                 </AnchorPane>
@@ -56,12 +70,13 @@
     </center>
     <left>
         <AnchorPane>
-            <ScrollPane fx:id="userScrollPane" prefHeight="306.0" prefWidth="200.0" BorderPane.alignment="CENTER" style="-fx-background-color: #168965;">
-                <AnchorPane>
-                    <ListView fx:id="userList" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-                              style="-fx-background-color: #123565;"/>
-                </AnchorPane>
-            </ScrollPane>
+            <children>
+                <ScrollPane fx:id="userScrollPane" fitToHeight="true" prefWidth="-Infinity" minWidth="250" BorderPane.alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+                    <AnchorPane>
+                        <ListView fx:id="userList" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    </AnchorPane>
+                </ScrollPane>
+            </children>
         </AnchorPane>
     </left>
 </BorderPane>

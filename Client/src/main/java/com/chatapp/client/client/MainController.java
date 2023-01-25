@@ -43,10 +43,9 @@ public class MainController implements Initializable {
 
     private Client client;
 
-    private String reciever="hardik";
+    private String reciever=null;
 
     private ArrayList<String> clientList;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
@@ -110,6 +109,7 @@ public class MainController implements Initializable {
         Platform.runLater(()->{
             vBox.getChildren().add(hBox);
         });
+
     }
 
     //setting username
@@ -120,16 +120,25 @@ public class MainController implements Initializable {
 
     //handling send button
     public void sendMessage(MouseEvent event) {
-        String msg = message.getText().trim();
-        HBox hBox = new HBox();
-        Text text = new Text(msg);
-        TextFlow textFlow = new TextFlow(text);
-        hBox.getChildren().add(textFlow);
-        hBox.setStyle("-fx-background-color: #123456");
-        hBox.setAlignment(Pos.BASELINE_RIGHT);
-        Message message;
-        message = new Message(msg,name,reciever);
-        client.sendMessage(message);
-        MainController.addMessage(hBox,messageBox);
+        //TODO:message box scroll bar is not working fix it
+        //TODO: dont send empty messages and dont send it to null reciver
+        if(reciever!=null){
+            String msg = message.getText().trim();
+            if(!msg.isEmpty()){
+                message.clear();
+                HBox hBox = new HBox();
+                Text text = new Text(msg);
+                text.setStyle("-fx-fill:white;");
+                TextFlow textFlow = new TextFlow(text);
+                textFlow.setStyle("-fx-background-color: #2f4bed;-fx-fill: white;-fx-background-radius:10px 0px 10px 0px;-fx-padding:10px;");
+                hBox.getChildren().add(textFlow);
+                hBox.setStyle("-fx-padding:4px 0px 4px 60px;");
+                hBox.setAlignment(Pos.CENTER_RIGHT);
+                Message message;
+                message = new Message(msg,name,reciever);
+                client.sendMessage(message);
+                MainController.addMessage(hBox,messageBox);
+            }
+        }
     }
 }

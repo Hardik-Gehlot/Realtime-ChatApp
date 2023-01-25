@@ -9,9 +9,10 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatapp.client.client.LoginController">
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatapp.client.client.LoginController">
     <children>
-        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+        <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
             <children>
                 <Label text="Username">
                     <VBox.margin>
@@ -29,11 +30,8 @@
                         <Insets bottom="10.0" />
                     </VBox.margin>
                 </TextField>
-                <Button mnemonicParsing="false" text="Submit" onMouseClicked="#login" />
+                <Button mnemonicParsing="false" text="Start" style="-fx-background-color:linear-gradient(to right,#090435,#070328);-fx-text-fill:white;-fx-background-radius:50px 50px 30px 30px" onMouseClicked="#login" />
             </children>
-            <padding>
-                <Insets bottom="40.0" left="40.0" right="40.0" top="30.0" />
-            </padding>
         </VBox>
     </children>
-</Pane>
+</AnchorPane>

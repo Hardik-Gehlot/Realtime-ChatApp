@@ -13,7 +13,7 @@ public class LoginApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 250, 150);
         stage.setTitle("Realtime Chatapp");
         stage.setScene(scene);
         stage.show();

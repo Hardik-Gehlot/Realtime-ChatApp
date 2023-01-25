@@ -82,13 +82,14 @@ class ReadMessages extends Thread{
             if(message.getSender().equals("server")){
                 MainController.updateUser(message.getMsg(),userListView,message.getReceiver());
             }else{
-                System.out.println("setting message");
                 HBox hBox = new HBox();
                 Text text = new Text(message.getSender()+": "+message.getMsg());
+                text.setStyle("-fx-fill:white;");
                 TextFlow textFlow = new TextFlow(text);
+                textFlow.setStyle("-fx-background-color:#58af0c;-fx-background-radius:0px 10px 0px 10px;-fx-padding:10px;");
                 hBox.getChildren().add(textFlow);
-                hBox.setStyle("-fx-background-color: #123456");
-                hBox.setAlignment(Pos.BASELINE_LEFT);
+                hBox.setStyle("-fx-padding:4px 60px 4px 0px;");
+                hBox.setAlignment(Pos.CENTER_LEFT);
                 MainController.addMessage(hBox,messageBox);
             }
         }

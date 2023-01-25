@@ -21,8 +21,10 @@ public class LoginController {
         MainController controller = loader.getController();
         controller.setUsername(name);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root,900,500);
         stage.setScene(scene);
+        stage.setMaximized(true);
+        stage.setResizable(true);
         stage.show();
     }
 }
