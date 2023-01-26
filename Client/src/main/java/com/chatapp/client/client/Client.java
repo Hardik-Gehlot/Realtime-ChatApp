@@ -37,7 +37,7 @@ public class Client {
 
     public void sendMessage(Message message) {
         try {
-            String msg = message.getSender()+"~"+message.getReceiver()+"~"+message.getMsg();
+            String msg = message.getSender()+"~"+message.getReceiver()+"~"+AES.encrypt(message.getMsg());//TODO:encrypt
             outputStream.writeObject(msg);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -76,7 +76,7 @@ class ReadMessages extends Thread{
                 MainController.updateUser(message.getMsg(),userListView,message.getReceiver());
             }else{
                 HBox hBox = new HBox();
-                Text text = new Text(message.getSender()+": "+message.getMsg());
+                Text text = new Text(message.getSender()+": "+AES.decrypt(message.getMsg()));
                 text.setStyle("-fx-fill:white;");
                 TextFlow textFlow = new TextFlow(text);
                 textFlow.setStyle("-fx-background-color:#58af0c;-fx-background-radius:0px 10px 0px 10px;-fx-padding:10px;");
