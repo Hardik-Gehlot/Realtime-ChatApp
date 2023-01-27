@@ -53,8 +53,11 @@ public class MainController implements Initializable {
                     Thread.onSpinWait();
                 }
                 try {
-                    //sending username
-                    outputStream.writeObject(name);
+                    //sending username and PUBLIC_KEY
+                    int publicKey = DHKE.getInstance().PUBLIC_KEY;
+                    String str = publicKey+"~"+name;
+                    outputStream.writeObject(str);
+                    System.out.println("maincontroller 60 sending string "+str);
                     client = new Client(socket,messageBox,userList);
                 } catch (IOException e) {
                     throw new RuntimeException(e);

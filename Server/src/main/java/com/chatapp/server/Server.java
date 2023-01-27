@@ -14,6 +14,7 @@ import java.util.Set;
 
 public class Server {
     static HashMap<String, Socket> clients;
+    static HashMap<String,String> publicKeys;
 
     private final int JOINED = 1;
     static VBox messageVbox;
@@ -23,6 +24,7 @@ public class Server {
         this.messageVbox=messageVbox;
         this.userVbox = userVbox;
         this.clients = new HashMap<>();
+        this.publicKeys = new HashMap<>();
         this.serverSocket = serverSocket;
         //start listening for new clients
         startListeningForClients();
@@ -49,17 +51,30 @@ public class Server {
                 ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
                 ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
                 //getting username
-                String username = (String) in.readObject();
+                String str = (String) in.readObject();
+                System.out.println("received str 54 "+str);
+                String[] arr = str.split("~",2);
+                System.out.println("received arr 56 "+arr);
+                String username = arr[1];
+                String publickey = arr[0];
                 //sending all users to the client except himself
                 Set<String> keys = clients.keySet();
                 ArrayList<String> users = new ArrayList<>(keys);
+                System.out.println("users: "+users);
+                for(int i=0;i<users.size();i++){
+                    String user = users.get(i);
+                    user = publicKeys.get(user)+"~"+ user;
+                    users.set(i,user);
+                }
+                System.out.println("usrs after: "+users);
                 out.writeObject(users);
                 //adding client inside a hashmap
                 clients.put(username,sock);
+                publicKeys.put(username,publickey);
                 //adding users list
                 MainController.addUser(username+" joined!",userVbox);
                 //sending user update to all other users
-                sendUpdate(username,JOINED);
+                sendUpdate(str,JOINED);
                 //reading messages from client
                 ReadMessage readMessage = new ReadMessage(sock,username);
                 readMessage.start();
@@ -68,8 +83,11 @@ public class Server {
             }
         }).start();
     }
-    public static void sendUpdate(String username, int joined) {
+    public static void sendUpdate(String str, int joined) {
         new Thread(() -> {
+            String[] arr = str.split("~",2);
+            String username = arr[1];
+            String publickey = arr[0];
             for (Map.Entry<String,Socket> entry: clients.entrySet()){
                 if(!entry.getKey().equals(username)){
                     try {
@@ -77,7 +95,7 @@ public class Server {
                         if(socket.isConnected()) {
                             Message message;
                             if (joined == 1) {
-                                message = new Message("server", "addUser", username);
+                                message = new Message("server", "addUser", publickey+"~"+username);
                             } else {
                                 message = new Message("server", "removeUser", username);
                             }
