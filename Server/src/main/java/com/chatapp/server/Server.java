@@ -131,6 +131,7 @@ class ReadMessage extends Thread{
             if(message.getReceiver().equals("server")){
                 MainController.addMessage(username+" quit!",Server.userVbox);
                 Server.clients.remove(username);
+                Server.publicKeys.remove(username);
                 Server.sendUpdate(-1+"~"+username,0);
                 break;
             }
