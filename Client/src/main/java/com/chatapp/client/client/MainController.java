@@ -5,6 +5,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -12,6 +13,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -39,13 +42,15 @@ public class MainController implements Initializable {
 
     private volatile String name=null;
 
-    private Client client;
+    public static Client client;
 
     private String reciever=null;
+    private static MainController obj;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
+            obj=this;
             Socket socket = new Socket("localhost",2020);
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             new Thread(() -> {
@@ -57,7 +62,6 @@ public class MainController implements Initializable {
                     int publicKey = DHKE.getInstance().PUBLIC_KEY;
                     String str = publicKey+"~"+name;
                     outputStream.writeObject(str);
-                    System.out.println("maincontroller 60 sending string "+str);
                     client = new Client(socket,messageBox,userList);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -66,12 +70,8 @@ public class MainController implements Initializable {
         }catch (Exception e){
             e.printStackTrace();
         }
-        //auto scroll messages to bottom
-        messageBox.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                messageBoxScrollPane.setVvalue((Double) t1);
-            }
+        messageBox.heightProperty().addListener((observableValue, number, t1) -> {
+            messageBoxScrollPane.setVvalue((Double) t1);
         });
 
         //getting users
@@ -81,6 +81,9 @@ public class MainController implements Initializable {
                 reciever = t1;
             }
         });
+    }
+    public static MainController getInstance(){
+        return obj;
     }
 
     //add users to listview
@@ -102,13 +105,11 @@ public class MainController implements Initializable {
     }
 
     //adding messages
-    public static void addMessage(HBox hBox, VBox vBox){
+    public void addMessage(HBox hBox, VBox vBox){
         Platform.runLater(()->{
             vBox.getChildren().add(hBox);
         });
-
     }
-
     //setting username
     public void setUsername(String name) {
         this.name = name;
@@ -120,19 +121,26 @@ public class MainController implements Initializable {
         if(reciever!=null){
             String msg = message.getText().trim();
             if(!msg.isEmpty()){
+                if(msg.equals("/exit")){
+                    reciever="server";
+                    Message message;
+                    message = new Message(name,reciever,msg);
+                    client.sendMessage(message);
+                    Platform.exit();
+                }
                 message.clear();
                 HBox hBox = new HBox();
+                hBox.setAlignment(Pos.CENTER_RIGHT);
+                hBox.setPadding(new Insets(4,0,4,60));
                 Text text = new Text(msg);
                 text.setStyle("-fx-fill:white;");
                 TextFlow textFlow = new TextFlow(text);
                 textFlow.setStyle("-fx-background-color: #2f4bed;-fx-fill: white;-fx-background-radius:10px 0px 10px 0px;-fx-padding:10px;");
                 hBox.getChildren().add(textFlow);
-                hBox.setStyle("-fx-padding:4px 0px 4px 60px;");
-                hBox.setAlignment(Pos.CENTER_RIGHT);
                 Message message;
                 message = new Message(name,reciever,msg);
                 client.sendMessage(message);
-                MainController.addMessage(hBox,messageBox);
+                MainController.getInstance().addMessage(hBox,messageBox);
             }
         }
     }

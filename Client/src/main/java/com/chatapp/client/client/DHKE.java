@@ -1,6 +1,7 @@
 package com.chatapp.client.client;
 
-import java.util.Random;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 public class DHKE{
     private static DHKE obj = null;
@@ -10,16 +11,16 @@ public class DHKE{
     public int PUBLIC_KEY;
 
     public DHKE() {
-        P = 7;
-        G = 2;
-        PRIVATE_KEY = new Random().nextInt(20);
-        System.out.println("~~~~~~~~~~~~~private key is: "+PRIVATE_KEY);
-        PUBLIC_KEY = (int) (Math.pow(G,PRIVATE_KEY)%P);
-        System.out.println("~~~~~~~~~~~~~public key is: "+PUBLIC_KEY);
+        P = 47;
+        G = P-5;
+        PRIVATE_KEY = new SecureRandom().nextInt(P-2);
+        BigInteger bi = new BigInteger(G+"").pow(PRIVATE_KEY).mod(new BigInteger(P+""));
+        PUBLIC_KEY = bi.intValue();
     }
 
     public int getSharedKey(int key){
-        return (int) Math.pow(key,PRIVATE_KEY)%P;
+        BigInteger bi = new BigInteger(key+"").pow(PRIVATE_KEY).mod(new BigInteger(P+""));
+        return bi.intValue();
     }
     public static DHKE getInstance() {
         if(obj==null){

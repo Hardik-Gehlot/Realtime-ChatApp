@@ -52,21 +52,17 @@ public class Server {
                 ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
                 //getting username
                 String str = (String) in.readObject();
-                System.out.println("received str 54 "+str);
                 String[] arr = str.split("~",2);
-                System.out.println("received arr 56 "+arr);
                 String username = arr[1];
                 String publickey = arr[0];
                 //sending all users to the client except himself
                 Set<String> keys = clients.keySet();
                 ArrayList<String> users = new ArrayList<>(keys);
-                System.out.println("users: "+users);
                 for(int i=0;i<users.size();i++){
                     String user = users.get(i);
                     user = publicKeys.get(user)+"~"+ user;
                     users.set(i,user);
                 }
-                System.out.println("usrs after: "+users);
                 out.writeObject(users);
                 //adding client inside a hashmap
                 clients.put(username,sock);
@@ -132,10 +128,10 @@ class ReadMessage extends Thread{
             }
             String[] msg = str.split("~",3);
             Message message = new Message(msg[0],msg[1],msg[2]);
-            if(message.getMsg().equals("exit")){
+            if(message.getReceiver().equals("server")){
                 MainController.addMessage(username+" quit!",Server.userVbox);
                 Server.clients.remove(username);
-                Server.sendUpdate(username,0);
+                Server.sendUpdate(-1+"~"+username,0);
                 break;
             }
             try {

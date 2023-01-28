@@ -3,6 +3,7 @@ package com.chatapp.client.client;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -36,7 +37,6 @@ public class Client {
                 String[] str = user.split("~",2);
                 int key = Integer.parseInt(str[0]);
                 String username = str[1];
-                System.out.println("user "+i+": "+str[0]+" "+str[1]);
                 int sharedKey = DHKE.getInstance().getSharedKey(key);
                 sharedKeys.put(username,sharedKey);
                 users.set(i,username);
@@ -51,7 +51,12 @@ public class Client {
 
     public void sendMessage(Message message) {
         try {
-            String msg = message.getSender()+"~"+message.getReceiver()+"~"+AES.encrypt(message.getMsg(),sharedKeys.get(message.getReceiver()));
+            String msg="";
+            if(message.getReceiver().equals("server")){
+                msg = message.getSender()+"~"+message.getReceiver()+"~"+message.getMsg();
+            }else{
+                msg = message.getSender()+"~"+message.getReceiver()+"~"+AES.encrypt(message.getMsg(),sharedKeys.get(message.getReceiver()));
+            }
             outputStream.writeObject(msg);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -62,7 +67,7 @@ class ReadMessages extends Thread{
     Socket socket;
     public VBox messageBox;
     public ListView<String> userListView;
-    ReadMessages(Socket socket,VBox messageBox,ListView<String> userListView) throws IOException {
+    ReadMessages(Socket socket, VBox messageBox, ListView<String> userListView) throws IOException {
         this.socket = socket;
         this.messageBox =  messageBox;
         this.userListView = userListView;
@@ -95,13 +100,13 @@ class ReadMessages extends Thread{
                     Client.sharedKeys.put(username,DHKE.getInstance().getSharedKey(publicKey));
                 }else{
                     username = message.getMsg();
-                    if(Client.sharedKeys.containsKey(username)){
-                        Client.sharedKeys.remove(username);
-                    }
+                    Client.sharedKeys.remove(username);
                 }
                 MainController.updateUser(username,userListView,message.getReceiver());
             }else{
                 HBox hBox = new HBox();
+                hBox.minHeight(45.54);
+                hBox.setPrefHeight(Region.USE_COMPUTED_SIZE);
                 Text text = new Text(message.getSender()+": "+AES.decrypt(message.getMsg(),Client.sharedKeys.get(message.getSender())));
                 text.setStyle("-fx-fill:white;");
                 TextFlow textFlow = new TextFlow(text);
@@ -109,7 +114,7 @@ class ReadMessages extends Thread{
                 hBox.getChildren().add(textFlow);
                 hBox.setStyle("-fx-padding:4px 60px 4px 0px;");
                 hBox.setAlignment(Pos.CENTER_LEFT);
-                MainController.addMessage(hBox,messageBox);
+                MainController.getInstance().addMessage(hBox,messageBox);
             }
         }
     }

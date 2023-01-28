@@ -11,7 +11,6 @@ public class AES {
     private static Key getSecretKey(int sharedKey){
             try{
                 String ALGORITHM = "AES";
-                System.out.println("------------>sharedKey: "+sharedKey);
                 // Compute the SHA-256 hash of the number
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 md.update(Integer.toString(sharedKey).getBytes());

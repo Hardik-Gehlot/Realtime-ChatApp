@@ -39,15 +39,9 @@
             <center>
                 <AnchorPane>
                     <children>
-                        <ScrollPane fx:id="messageBoxScrollPane" fitToHeight="true" fitToWidth="true"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
-                            <content>
-                                <AnchorPane>
-                                    <children>
-                                        <VBox fx:id="messageBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                                        </VBox>
-                                    </children>
-                                </AnchorPane>
-                            </content>
+                        <ScrollPane fx:id="messageBoxScrollPane" fitToWidth="true" fitToHeight="true" prefHeight="270" prefWidth="300" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+                                <VBox fx:id="messageBox" prefHeight="266" prefWidth="296" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                                </VBox>
                         </ScrollPane>
                     </children>
                 </AnchorPane>

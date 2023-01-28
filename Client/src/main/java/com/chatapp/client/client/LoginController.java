@@ -1,5 +1,7 @@
 package com.chatapp.client.client;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -26,5 +29,14 @@ public class LoginController {
         stage.setMaximized(true);
         stage.setResizable(true);
         stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                Message message;
+                message = new Message(name,"server","/exit");
+                MainController.client.sendMessage(message);
+                Platform.exit();
+            }
+        });
     }
 }
